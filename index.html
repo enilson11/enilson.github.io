@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserva de Pasaje - Agencia Takis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            margin: 20px auto;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            font-size: 1.1em;
+            margin: 10px 0 5px;
+        }
+        select, input[type="number"], input[type="text"], input[type="email"] {
+            padding: 10px;
+            margin: 5px 0 15px;
+            font-size: 1em;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Reserva tu Pasaje con Agencia Takis</h1>
+    </header>
+
+    <section class="form-container">
+        <form id="reservation-form">
+            <label for="destination">Destino:</label>
+            <select id="destination" name="destination">
+                <option value="Brasil">Brasil 🇧🇷</option>
+                <option value="Argentina">Argentina 🇦🇷</option>
+                <option value="Italia">Italia 🇮🇹</option>
+                <option value="Francia">Francia 🇫🇷</option>
+                <option value="Sudáfrica">Sudáfrica 🇿🇦</option>
+                <option value="Marruecos">Marruecos 🇲🇦</option>
+                <option value="Japón">Japón 🇯🇵</option>
+                <option value="Tailandia">Tailandia 🇹🇭</option>
+                <option value="Australia">Australia 🇦🇺</option>
+                <option value="Nueva Zelanda">Nueva Zelanda 🇳🇿</option>
+            </select>
+
+            <label for="flight-type">Tipo de Vuelo:</label>
+            <select id="flight-type" name="flight-type">
+                <option value="ida-y-vuelta">Ida y vuelta</option>
+                <option value="solo-ida">Solo ida</option>
+            </select>
+
+            <label for="accommodation">Alojamiento (número de noches):</label>
+            <input type="number" id="accommodation" name="accommodation" min="1" max="30" value="7">
+
+            <label for="personal-info">Información Personal:</label>
+            <input type="text" id="name" name="name" placeholder="Nombre completo" required>
+            <input type="email" id="email" name="email" placeholder="Correo electrónico" required>
+
+            <button type="button" id="download-pdf">Generar PDF</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Agencia Takis. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- Cargar la librería jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script>
+        // Script para generar el PDF
+        document.getElementById("download-pdf").addEventListener("click", function () {
+            // Obtener los valores del formulario
+            const destination = document.getElementById("destination").value;
+            const flightType = document.getElementById("flight-type").value;
+            const accommodation = document.getElementById("accommodation").value;
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+
+            // Crear un nuevo documento PDF
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Título del documento
+            doc.setFontSize(20);
+            doc.text("Reserva de Pasaje - Agencia Takis", 20, 20);
+
+            // Agregar los detalles de la reserva
+            doc.setFontSize(12);
+            doc.text(`Nombre: ${name}`, 20, 30);
+            doc.text(`Correo Electrónico: ${email}`, 20, 40);
+            doc.text(`Destino: ${destination}`, 20, 50);
+            doc.text(`Tipo de Vuelo: ${flightType}`, 20, 60);
+            doc.text(`Alojamiento: ${accommodation} noches`, 20, 70);
+
+            // Generar y descargar el PDF
+            doc.save(`${name}_reserva.pdf`);
+        });
+    </script>
+
+</body>
+</html>
